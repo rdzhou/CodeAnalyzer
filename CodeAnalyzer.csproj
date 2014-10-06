@@ -42,6 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicDisplay.cs" />
+    <Compile Include="IRuleandAction.cs" />
+    <Compile Include="RulesAndActions.cs" />
+    <Compile Include="ScopeStack.cs" />
+    <Compile Include="Semi.cs" />
+    <Compile Include="Toker.cs" />
     <Compile Include="XLog.cs" />
     <Compile Include="CMDParser.cs" />
     <Compile Include="Display.cs" />
@@ -51,8 +56,6 @@
     <Compile Include="Executive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelationDisplay.cs" />
-    <Compile Include="Semi.cs" />
-    <Compile Include="Tokenizer.cs" />
     <Compile Include="XMLGenerator.cs" />
   </ItemGroup>
   <ItemGroup>

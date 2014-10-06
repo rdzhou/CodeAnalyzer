@@ -57,6 +57,7 @@ namespace Navig
         public void go(string path, string pattern, bool bSubdir)
         {
             path = Path.GetFullPath(path);
+            string oriPath = Directory.GetCurrentDirectory();
             Directory.SetCurrentDirectory(path);
             if (newDir != null)
                 newDir(path);
@@ -76,7 +77,7 @@ namespace Navig
                     go(dir, pattern, bSubdir);
                 }
             }
-
+            Directory.SetCurrentDirectory(oriPath);
         }
     }
 }

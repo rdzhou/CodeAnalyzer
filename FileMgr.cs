@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Navig;
 
-namespace CodeAnalyzer
+namespace CodeAnalysis
 {
     class FileMgr
     {
