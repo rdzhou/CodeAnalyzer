@@ -31,19 +31,7 @@ namespace CodeAnalysis
 
     class Executive
     {
-        static void Traverse(Elem elem, int level)
-        {
-            string tabs = "";
-            for (int i = 0; i < level; ++i)
-            {
-                tabs += '\t';
-            }
-            Console.WriteLine(tabs + elem.type + " " + elem.name + " " + elem.begin + " " + elem.end);
-            foreach (Elem e in elem.children)
-            {
-                Traverse(e, level + 1);
-            }
-        }
+
 
         static void Main(string[] args)
         {
@@ -54,12 +42,14 @@ namespace CodeAnalysis
             FileMgr filemgr = new FileMgr();
             List<string> files = filemgr.GetFiles(argu);
 
+            List<Repository> repos = new List<Repository>();
+
             // Parse the file one by one
             foreach(string file in files)
             {
-                XLog.LogLine(file);
+                // XLog.LogLine(file);
 
-                XLog.LogLine("  Processing file {0}", file);
+                // XLog.LogLine("  Processing file {0}", file);
 
                 CSsemi.CSemiExp semi = new CSsemi.CSemiExp();
                 semi.displayNewLines = true;
@@ -69,9 +59,6 @@ namespace CodeAnalysis
                     return;
                 }
 
-                Console.Write("\n  Type and Function Analysis");
-                Console.Write("\n ----------------------------\n");
-
                 BuildCodeAnalyzer builder = new BuildCodeAnalyzer(semi);
                 Parser parser = builder.build();
 
@@ -79,36 +66,51 @@ namespace CodeAnalysis
                 {
                     while (semi.getSemi())
                         parser.parse(semi);
-                    Console.Write("\n\n  locations table contains:");
                 }
                 catch (Exception ex)
                 {
                     Console.Write("\n\n  {0}\n", ex.Message);
                 }
                 Repository rep = Repository.getInstance();
-                List<Elem> table = rep.locations;
-                foreach (Elem e in table)
-                {
-                    Console.Write("\n  {0,10}, {1,25}, {2,5}, {3,5}", e.type, e.name, e.begin, e.end);
-                    if (e.type == "function")
-                        Console.Write("{0,5}", e.complexity);
-
-                }
-                Console.WriteLine();
-                Console.Write("\n\n  That's all folks!\n\n");
-
-                List<Elem> tree = rep.tree_locations;
-                Console.WriteLine(tree.Count);
-                foreach (Elem e in tree)
-                {
-                    Traverse(e, 0);
-                }
+                rep.file = file;
+                repos.Add(rep);
                 semi.close();
-             
-
-                // display the final results
-                Display.Write(argu.bX, argu.bR);
             }
+
+            if(argu.bR)
+            {
+                TypeTable table = new TypeTable(repos);
+                repos = new List<Repository>();
+                foreach (string file in files)
+                {
+                    CSsemi.CSemiExp semi = new CSsemi.CSemiExp();
+                    semi.displayNewLines = true;
+                    if (!semi.open(file))
+                    {
+                        Console.Write("\n  Can't open {0}\n\n", args[0]);
+                        return;
+                    }
+                    BuildRelationAnalyzer builder = new BuildRelationAnalyzer(semi, table);
+                    Parser parser = builder.build();
+
+                    try
+                    {
+                        while (semi.getSemi())
+                            parser.parse(semi);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Write("\n\n  {0}\n", ex.Message);
+                    }
+                    Repository rep = Repository.getInstance();
+                    rep.file = file;
+                    repos.Add(rep);
+                    semi.close();
+                }
+            }
+
+            // display the final results
+            Display.Write(repos, argu.bX, argu.bR);
 
             Console.ReadLine();
 

@@ -122,15 +122,77 @@ namespace CodeAnalysis
 
     public class Repository
     {
+        string file_;
+        
+        public string file
+        {
+            get
+            {
+                return file_;
+            }
+            set
+            {
+                file_ = value;
+                foreach(Relation relation in relations_)
+                {
+                    relation.source.file = value;
+                }
+            }
+        
+        }
         ScopeStack<Elem> stack_ = new ScopeStack<Elem>();
         List<Elem> locations_ = new List<Elem>();
         List<Elem> tree_locations_ = new List<Elem>();
+        List<Relation> relations_ = new List<Relation>();
+        public TypeTable type_table { get; set; }
 
         static Repository instance;
 
         public Repository()
         {
             instance = this;
+        }
+
+        public bool NotInFunction()
+        {
+            for(int i=0; i < stack_.count; ++i)
+            {
+                if(stack[i].type == "function")
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public Elem TopClass()
+        {
+            for(int i= stack_.count-1; i>=0; --i)
+            {
+                if(stack_[i].type == "class" ||
+                    stack_[i].type == "struct" ||
+                    stack_[i].type == "interface")
+                {
+                    return stack_[i];
+                }
+            }
+            return null;
+        }
+
+        public void AddRelation(Relation r)
+        {
+            foreach(Relation relation in relations_)
+            {
+                if(r.source.type == relation.source.type
+                    && r.source.name == relation.source.name
+                    && r.relation_type == relation.relation_type
+                    && r.target.type == relation.target.type
+                    && r.target.name == relation.target.name)
+                {
+                    return;
+                }
+            }
+            relations_.Add(r);
         }
 
         public static Repository getInstance()
@@ -187,6 +249,11 @@ namespace CodeAnalysis
         public List<Elem> tree_locations
         {
             get { return tree_locations_; }
+        }
+
+        public List<Relation> relations
+        {
+            get { return relations_;  }
         }
     }
     /////////////////////////////////////////////////////////
@@ -603,7 +670,7 @@ namespace CodeAnalysis
     }
     public class BuildCodeAnalyzer
     {
-        Repository repo = new Repository();
+        protected Repository repo = new Repository();
 
         public BuildCodeAnalyzer(CSsemi.CSemiExp semi)
         {

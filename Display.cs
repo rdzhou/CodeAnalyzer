@@ -18,10 +18,25 @@ namespace CodeAnalysis
 {
     class Display
     {
-        public static void Write(bool bX, bool bR)
+        public static void Write(List<Repository> repos, bool bX, bool bR)
         {
             // TODO: Write the final results to standard output
             // and XML file
+            if(!bR)
+            {
+                if(bX)
+                {
+                    BasicDisplayXML.Write(repos);
+                }
+                else
+                {
+                    BasicDisplay.Write(repos);
+                }
+            }
+            else
+            {
+                RelationDisplay.Write(repos);
+            }
         }
     }
 }

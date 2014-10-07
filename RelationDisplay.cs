@@ -17,5 +17,15 @@ namespace CodeAnalysis
 {
     class RelationDisplay
     {
+        public static void Write(List<Repository> repos)
+        {
+            foreach(Repository repo in repos)
+            {
+                foreach(Relation r in repo.relations)
+                {
+                    Console.Write("{0} {1} {2} {3} {4}\n", r.source.type, r.source.name, r.relation_type, r.target.type, r.target.name);
+                }
+            }
+        }
     }
 }

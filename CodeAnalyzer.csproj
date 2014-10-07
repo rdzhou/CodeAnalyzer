@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicDisplay.cs" />
+    <Compile Include="Relation.cs" />
     <Compile Include="IRuleandAction.cs" />
     <Compile Include="RulesAndActions.cs" />
     <Compile Include="ScopeStack.cs" />

@@ -79,13 +79,11 @@ namespace CodeAnalysis
             // Note: rule returns true to tell parser to stop
             //       processing the current semiExp
 
-            bool bMatch = false;
             foreach (IRule rule in Rules)
             {
                 //semi.display();
                 if (rule.test(semi))
                 {
-                    bMatch = true;
                     break;
                 }
             }
