@@ -55,7 +55,7 @@ namespace CodeAnalysis
                         Relation relation = new Relation();
                         relation.source = source;
                         relation.target = target;
-                        relation.relation_type = "inherit";
+                        relation.relation_type = "inheritance";
                         repo_.AddRelation(relation);
                     }
                 }
@@ -96,7 +96,7 @@ namespace CodeAnalysis
                     Relation relation = new Relation();
                     relation.source = source;
                     relation.target = target;
-                    relation.relation_type = "composite";
+                    relation.relation_type = "composition";
                     repo_.AddRelation(relation);
                 }
             }
@@ -137,7 +137,7 @@ namespace CodeAnalysis
                     Relation relation = new Relation();
                     relation.source = source;
                     relation.target = target;
-                    relation.relation_type = "aggregate";
+                    relation.relation_type = "aggregation";
                     repo_.AddRelation(relation);
                 }
             }
@@ -177,7 +177,7 @@ namespace CodeAnalysis
                     Relation relation = new Relation();
                     relation.source = source;
                     relation.target = target;
-                    relation.relation_type = "use";
+                    relation.relation_type = "using";
                     repo_.AddRelation(relation);
                 }
             }
@@ -212,7 +212,7 @@ namespace CodeAnalysis
                     Relation relation = new Relation();
                     relation.source = source;
                     relation.target = target;
-                    relation.relation_type = "use";
+                    relation.relation_type = "using";
                     repo_.AddRelation(relation);
                 }
             }

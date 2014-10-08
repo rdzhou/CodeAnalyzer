@@ -35,7 +35,14 @@ namespace CodeAnalysis
             }
             else
             {
-                RelationDisplay.Write(repos);
+                if(bX)
+                {
+                    RelationDisplayXML.Write(repos);
+                }
+                else
+                {
+                    RelationDisplay.Write(repos);
+                }
             }
         }
     }
